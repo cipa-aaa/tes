@@ -1,11 +1,391 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Berita Terkini — Update Cepat & Terpercaya</title>
+  <meta name="description" content="Landing page untuk menampilkan ringkasan berita terkini, kategori, dan berlangganan newsletter." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Small visual polish */
+    .card-img { background-size: cover; background-position: center; height: 160px; }
+  </style>
 </head>
-<body>
-    <h1>tes 123</h1>
+<body class="bg-gray-50 text-slate-800 antialiased">
+  <!-- Header -->
+  <header class="bg-white shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+      <a href="#" class="flex items-center gap-3">
+        <div class="w-10 h-10 bg-orange-500 rounded-md flex items-center justify-center text-white font-bold">B</div>
+        <div>
+          <h1 class="text-lg font-semibold">BeritaTerkini</h1>
+          <p class="text-xs text-slate-500">Update cepat | Ringkas | Terpercaya</p>
+        </div>
+      </a>
+
+      <nav class="hidden md:flex gap-6 items-center">
+        <a href="#headlines" class="hover:text-orange-600">Beranda</a>
+        <a href="#kategori" class="hover:text-orange-600">Kategori</a>
+        <a href="#newsletter" class="hover:text-orange-600">Berlangganan</a>
+        <a href="#about" class="px-3 py-1 border rounded text-sm">Tentang</a>
+      </nav>
+
+      <div class="md:hidden">
+        <button id="menuBtn" class="p-2 rounded-md border">Menu</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="bg-gradient-to-r from-orange-50 to-white">
+    <div class="max-w-7xl mx-auto px-4 py-12 grid md:grid-cols-2 gap-8 items-center">
+      <div>
+        <h2 class="text-3xl md:text-4xl font-extrabold">Berita Terkini — Langsung ke Intinya</h2>
+        <p class="mt-4 text-slate-600">Dapatkan ringkasan berita hari ini dari berbagai kategori: nasional, internasional, ekonomi, teknologi, dan hiburan. Cepat, jelas, dan mudah dibaca.</p>
+        <div class="mt-6 flex gap-3">
+          <a href="#headlines" class="px-4 py-2 bg-orange-600 text-white rounded shadow">Lihat Berita</a>
+          <a href="#newsletter" class="px-4 py-2 border rounded">Berlangganan Newsletter</a>
+        </div>
+
+        <div class="mt-6 text-sm text-slate-500">Sumber dapat disesuaikan: NewsAPI, RSS, atau CMS internal. (Tempatkan API key di file konfigurasi.)</div>
+      </div>
+
+      <div class="rounded-lg overflow-hidden shadow-md">
+        <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=1200&q=60');"></div>
+        <div class="p-4">
+          <h3 class="font-semibold">Headline Pilihan</h3>
+          <p class="text-sm text-slate-600 mt-2">Contoh headline yang menonjol di hari ini. Bagian ini bisa diisi otomatis dari feed berita.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Headlines -->
+  <main class="max-w-7xl mx-auto px-4 py-10">
+    <section id="headlines">
+      <div class="flex items-center justify-between">
+        <h3 class="text-2xl font-bold">Berita Terbaru</h3>
+        <div class="text-sm text-slate-500">Pilih kategori untuk memfilter</div>
+      </div>
+
+      <!-- Category Filter -->
+      <div class="mt-4 flex flex-wrap gap-3" id="categoryFilter">
+        <button data-cat="all" class="cat-btn px-3 py-1 border rounded text-sm bg-orange-600 text-white">Semua</button>
+        <button data-cat="nasional" class="cat-btn px-3 py-1 border rounded text-sm">Nasional</button>
+        <button data-cat="internasional" class="cat-btn px-3 py-1 border rounded text-sm">Internasional</button>
+        <button data-cat="ekonomi" class="cat-btn px-3 py-1 border rounded text-sm">Ekonomi</button>
+        <button data-cat="teknologi" class="cat-btn px-3 py-1 border rounded text-sm">Teknologi</button>
+        <button data-cat="hiburan" class="cat-btn px-3 py-1 border rounded text-sm">Hiburan</button>
+        <button data-cat="olahraga" class="cat-btn px-3 py-1 border rounded text-sm">Olahraga</button>
+      </div>
+
+      <div id="articles" class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3"></div>
+
+      <div class="mt-8 text-center">
+        <button id="loadMore" class="px-4 py-2 border rounded">Muat Lebih Banyak</button>
+      </div>
+    </section>
+
+    <!-- Categories -->
+    <section id="kategori" class="mt-12">
+      <h4 class="text-xl font-semibold">Kategori Populer</h4>
+      <div class="mt-4 flex flex-wrap gap-3">
+        <button class="px-3 py-1 border rounded text-sm">Nasional</button>
+        <button class="px-3 py-1 border rounded text-sm">Internasional</button>
+        <button class="px-3 py-1 border rounded text-sm">Ekonomi</button>
+        <button class="px-3 py-1 border rounded text-sm">Teknologi</button>
+        <button class="px-3 py-1 border rounded text-sm">Hiburan</button>
+        <button class="px-3 py-1 border rounded text-sm">Olahraga</button>
+      </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section id="newsletter" class="mt-12 bg-white p-6 rounded-lg shadow-sm">
+      <div class="md:flex md:items-center md:justify-between">
+        <div>
+          <h5 class="text-lg font-semibold">Dapatkan ringkasan berita tiap hari</h5>
+          <p class="text-sm text-slate-600">Masukkan email untuk menerima update singkat setiap pagi.</p>
+        </div>
+        <form id="subscribeForm" class="mt-4 md:mt-0 flex gap-2">
+          <input id="emailInput" type="email" placeholder="email@contoh.com" required class="px-3 py-2 border rounded w-full md:w-64" />
+          <button type="submit" class="px-4 py-2 bg-orange-600 text-white rounded">Berlangganan</button>
+        </form>
+      </div>
+      <div id="subscribeMsg" class="mt-3 text-sm text-green-600 hidden">Terima kasih! Email berhasil didaftarkan.</div>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="mt-10 text-sm text-slate-600">
+      <h6 class="font-semibold">Tentang</h6>
+      <p class="mt-2">Template landing page ini dibuat sebagai contoh untuk menampilkan update berita terkini. Anda dapat menghubungkannya ke NewsAPI, RSS feed, atau backend CMS untuk mengisi konten secara dinamis.</p>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t mt-12">
+    <div class="max-w-7xl mx-auto px-4 py-6 flex flex-col md:flex-row items-center justify-between text-sm text-slate-600">
+      <div>© <span id="year"></span> BeritaTerkini. Semua hak dilindungi.</div>
+      <div class="flex gap-4 mt-3 md:mt-0">
+        <a href="#">Twitter</a>
+        <a href="#">Facebook</a>
+        <a href="#">Instagram</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+  const API_KEY = "YOUR_API_KEY";
+  const PAGE_SIZE = 6;
+
+  // === BERITA MANUAL (TAMBAHKAN BERITA DI SINI) ===
+  const beritaManual = [
+    // === Nasional ===
+    {
+      title: "Presiden Resmikan Proyek Infrastruktur Baru",
+      source: "Kompas",
+      url: "https://www.kompas.com/nasional1",
+      image: "https://images.unsplash.com/photo-1581092334651-18d07a3d9a5c",
+      category: "nasional",
+      description: "Proyek strategis nasional resmi dibuka untuk meningkatkan konektivitas."
+    },
+    {
+      title: "Pemerintah Umumkan Kebijakan Baru Pendidikan",
+      source: "Detik",
+      url: "https://www.detik.com/nasional2",
+      image: "https://images.unsplash.com/photo-1588072432836-e10032774350",
+      category: "nasional",
+      description: "Aturan baru pendidikan diterapkan untuk mendorong kualitas pembelajaran."
+    },
+    {
+      title: "Harga Pangan Stabil Menjelang Akhir Tahun",
+      source: "Tempo",
+      url: "https://www.tempo.co/nasional3",
+      image: "https://images.unsplash.com/photo-1506806732259-39c2d0268443",
+      category: "nasional",
+      description: "Kementerian memastikan stok pangan aman dan harga tetap stabil."
+    },
+
+    // === Internasional ===
+    {
+      title: "Why the ‘America First’ President Keeps Looking Abroad",
+      source: "The New York Times",
+      url: "https://www.nytimes.com/2025/11/19/us/politics/trump-america-first-saudi-tariffs.html",
+      image: "https://static01.nyt.com/images/2025/11/19/multimedia/pol-newsletter-2-bcjt/pol-newsletter-2-bcjt-superJumbo.jpg?quality=75&auto=webp",
+      category: "internasional",
+      description: "Analisis mengapa kebijakan Amerika First justru fokus pada hubungan luar negeri."
+    },
+    {
+      title: "Pertemuan G20 Bahas Krisis Global",
+      source: "BBC",
+      url: "https://www.bbc.com/news/world2",
+      image: "https://images.unsplash.com/photo-1526662092594-e98c1e356d6c",
+      category: "internasional",
+      description: "Para pemimpin dunia membahas solusi atas peningkatan ketegangan ekonomi global."
+    },
+    {
+      title: "Negara Eropa Terapkan Kebijakan Iklim Baru",
+      source: "Reuters",
+      url: "https://www.reuters.com/world3",
+      image: "https://images.unsplash.com/photo-1502920917128-1aa500764b9e",
+      category: "internasional",
+      description: "Uni Eropa memperkenalkan kebijakan iklim yang lebih ketat untuk 2030."
+    },
+
+    // === Ekonomi ===
+    {
+      title: "IHSG Menguat di Penutupan Sesi Pertama",
+      source: "CNBC Indonesia",
+      url: "https://www.cnbcindonesia.com",
+      image: "https://akcdn.detik.net.id/visual/2025/11/03/menteri-keuangan.jpeg?w=714&q=90",
+      category: "ekonomi",
+      description: "Penguatan dipimpin sektor perbankan pada perdagangan hari ini."
+    },
+    {
+      title: "Rupiah Menguat Terhadap Dolar AS",
+      source: "Kontan",
+      url: "https://www.kontan.co.id/ekonomi2",
+      image: "https://images.unsplash.com/photo-1567427017947-545c5f8d16ad",
+      category: "ekonomi",
+      description: "Nilai tukar rupiah menunjukkan tren positif dalam perdagangan global."
+    },
+    {
+      title: "Harga Emas Dunia Naik Drastis",
+      source: "Bloomberg",
+      url: "https://www.bloomberg.com/markets3",
+      image: "https://images.unsplash.com/photo-1586880244406-556ebe35f282",
+      category: "ekonomi",
+      description: "Harga emas meningkat akibat ketidakpastian ekonomi dunia."
+    },
+
+    // === Teknologi ===
+    {
+      title: "Perusahaan Teknologi Rilis AI Baru",
+      source: "TechCrunch",
+      url: "https://techcrunch.com/tech1",
+      image: "https://images.unsplash.com/photo-1518770660439-4636190af475",
+      category: "teknologi",
+      description: "AI generasi terbaru menjanjikan efisiensi lebih tinggi dan respons lebih cepat."
+    },
+    {
+      title: "Inovasi Smartphone Lipat 2025",
+      source: "The Verge",
+      url: "https://www.theverge.com/tech2",
+      image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9",
+      category: "teknologi",
+      description: "Produsen besar memperkenalkan smartphone lipat dengan desain lebih kuat."
+    },
+    {
+      title: "Indonesia Bangun Pusat Data Nasional",
+      source: "KompasTekno",
+      url: "https://tekno.kompas.com/tech3",
+      image: "https://images.unsplash.com/photo-1581091012184-5c1f49b9f3ce",
+      category: "teknologi",
+      description: "Pembangunan pusat data nasional memasuki tahap penyelesaian akhir."
+    },
+
+    // === Hiburan ===
+    {
+      title: "Film Baru Raih Box Office Global",
+      source: "Hollywood Reporter",
+      url: "https://hollywoodreporter.com/ent1",
+      image: "https://images.unsplash.com/photo-1497032628192-86f99bcd76bc",
+      category: "hiburan",
+      description: "Film aksi terbaru mendapatkan respons positif dari penonton."
+    },
+    {
+      title: "Festival Musik Asia Dibuka Meriah",
+      source: "Billboard",
+      url: "https://billboard.com/ent2",
+      image: "https://images.unsplash.com/photo-1508672019048-805c876b67e2",
+      category: "hiburan",
+      description: "Festival musik terbesar Asia resmi dimulai dengan penampilan spektakuler."
+    },
+    {
+      title: "Aktor Populer Umumkan Proyek Baru",
+      source: "Variety",
+      url: "https://variety.com/ent3",
+      image: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e",
+      category: "hiburan",
+      description: "Aktor ternama kembali ke layar lebar dengan film drama terbaru."
+    },
+
+    // === Olahraga ===
+    {
+      title: "Tim Nasional Cetak Kemenangan Telak",
+      source: "Goal Indonesia",
+      url: "https://goal.com/sports1",
+      image: "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846",
+      category: "olahraga",
+      description: "Timnas menunjukkan performa luar biasa di laga persahabatan."
+    },
+    {
+      title: "Liga Champions: Pertandingan Sengit Terjadi",
+      source: "UEFA",
+      url: "https://uefa.com/sports2",
+      image: "https://images.unsplash.com/photo-1505842465776-3d90f616310f",
+      category: "olahraga",
+      description: "Babak penyisihan Liga Champions menghadirkan laga panas."
+    },
+    {
+      title: "Pembalap MotoGP Dominasi Sesi Latihan",
+      source: "MotoGP",
+      url: "https://motogp.com/sports3",
+      image: "https://images.unsplash.com/photo-1502877338535-766e1452684a",
+      category: "olahraga",
+      description: "Pembalap unggulan tampil dominan menjelang balapan utama."
+    }
+  ];
+
+  // === VARIABEL UTAMA ===
+  let currentPage = 1;
+  let currentCategory = 'all';
+
+  const articlesEl = document.getElementById('articles');
+  const loadMoreBtn = document.getElementById('loadMore');
+  const categoryBtns = document.querySelectorAll('.cat-btn');
+  const yearEl = document.getElementById('year');
+  yearEl.textContent = new Date().getFullYear();
+
+  // === EVENT UNTUK PILIH KATEGORI ===
+  categoryBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      currentCategory = btn.getAttribute('data-cat');
+      currentPage = 1;
+      articlesEl.innerHTML = '';
+      fetchAndRender();
+
+      categoryBtns.forEach(b => b.classList.remove('bg-orange-300'));
+      btn.classList.add('bg-orange-300');
+    });
+  });
+
+  loadMoreBtn.addEventListener('click', () => {
+    currentPage++;
+    fetchAndRender();
+  });
+
+  // === FUNGSI AMBIL BERITA API ===
+  async function fetchFromAPI() {
+    const categoryParam = currentCategory !== 'all' ? `&category=${currentCategory}` : '';
+    const url = `https://newsapi.org/v2/top-headlines?country=id${categoryParam}&pageSize=${PAGE_SIZE}&page=${currentPage}&apiKey=${API_KEY}`;
+
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+      if (data.status !== 'ok') return [];
+
+      return data.articles.map(a => ({
+        title: a.title,
+        source: a.source.name,
+        url: a.url,
+        image: a.urlToImage,
+        category: currentCategory,
+        description: a.description
+      }));
+    } catch {
+      return [];
+    }
+  }
+
+  // === RENDER BERITA ===
+  function renderNews(list) {
+    list.forEach(article => {
+      const card = document.createElement('article');
+      card.className = "bg-white rounded-lg shadow overflow-hidden";
+
+      card.innerHTML = `
+        <div class="card-img" style="background-image:url('${article.image || ''}')"></div>
+        <div class="p-4">
+          <h2 class="text-lg font-semibold">
+            <a href="${article.url}" target="_blank">${article.title}</a>
+          </h2>
+          <div class="mt-1 text-xs text-gray-500">${article.source}</div>
+          <p class="mt-2 text-sm text-gray-700">${article.description || ''}</p>
+        </div>
+      `;
+
+      articlesEl.appendChild(card);
+    });
+  }
+
+  // === PENGGABUNGAN MANUAL + API ===
+  async function fetchAndRender() {
+    articlesEl.innerHTML = '';
+
+    const apiNews = await fetchFromAPI();
+
+    const filteredManual = currentCategory === 'all'
+      ? beritaManual
+      : beritaManual.filter(b => b.category === currentCategory);
+
+    const allNews = [...filteredManual, ...apiNews];
+
+    renderNews(allNews);
+
+    loadMoreBtn.style.display = apiNews.length < PAGE_SIZE ? 'none' : 'inline-block';
+  }
+
+  fetchAndRender();
+</script>
 </body>
 </html>
